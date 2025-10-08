@@ -5,10 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
 class RoomJoiningFragment : Fragment() {
+
+    private var codeInput : EditText? = null
+    private var buttonJoinViaCode : Button? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,32 +28,19 @@ class RoomJoiningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Bind
+        codeInput = view.findViewById<EditText>(R.id.codeInput)
+
+        // Using on-click listener for JoinButton
+        buttonJoinViaCode = view.findViewById<Button>(R.id.buttonJoinViaCode)
+        buttonJoinViaCode!!.setOnClickListener { joinRoom() }
+
     }
 
     // this fun should be called with "Join Room" button is clicked
     fun joinRoom() {
-        val insertedCode = ""     // bind this to the field where the code should be inserted
-                                    // (this does not exist right now)
-        if (insertedCode.isEmpty()) {
-            // some kind of error message e.g. "Please enter game ID"
-            return
-        }
-
-        // Access Firebase to check if the insertedCode is valid
-        Firebase.firestore.collection("TasteBudge")
-            .document(insertedCode)
-            .get()
-            .addOnSuccessListener {
-                val game = it?.toObject(TasteBudgeGame::class.java)
-                if (game == null) {
-                    // some kind of error message e.g. "Please enter valid game ID"
-                    val placeholder = "placeholder"
-                } else {
-                    // Correct room code
-                    game.addPlayer(TasteBudgeData.player)
-                    TasteBudgeData.saveGame(game)
-                }
-            }
+        val insertedCode : String = codeInput!!.text.toString()
+        TasteBudgeManager.joinGame(insertedCode, codeInput!!)
     }
 
 }

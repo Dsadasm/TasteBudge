@@ -1,7 +1,9 @@
 package com.example.tastebudge
 
 // Placeholder class for a Player
-data class Player (
-    val name : String? = null,
+data class User (
+    val userName : String? = "",                // none of these two are implemented
+    val userID : String = "",
+    val votes : Map<String, String> = mapOf()   // restaurantID -> "vote"
 )
 

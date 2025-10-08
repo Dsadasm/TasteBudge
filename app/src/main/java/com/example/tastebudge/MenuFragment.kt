@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 
 class MenuFragment : Fragment() {
 
@@ -22,28 +21,18 @@ class MenuFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_menu, container, false)
 
         // i am not fully sure how this works
-        TasteBudgeData.tasteBudgeGame.observe(viewLifecycleOwner) {
+        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
             tasteBudgeGame = it
         }
 
+        // Always create a user first
+        TasteBudgeManager.user = User()
 
         val buttonCreateRoom: Button = view.findViewById(R.id.buttonCreateRoom)
         buttonCreateRoom.setOnClickListener {
 
-            // Create a "player"
-            TasteBudgeData.player = Player()
-
             // Create a new TasteBudgeGame
-            TasteBudgeData.saveGame(
-                TasteBudgeGame(
-                    roomCode = (100000 .. 999999).random().toString(),
-                    gameStatus = GameStatus.WAITING,
-
-                    // set self as host,  add self to playerList
-                    hostPlayer = TasteBudgeData.player,
-                    playerList = mutableListOf(TasteBudgeData.player)
-                )
-            )
+            TasteBudgeManager.createGame()
 
             val fragment: RoomCreationFragment = RoomCreationFragment()
 

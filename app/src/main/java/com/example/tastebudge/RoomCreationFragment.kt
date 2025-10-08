@@ -32,7 +32,7 @@ class RoomCreationFragment : Fragment() {
         roomCodeText = view.findViewById<TextView>(R.id.textCode)
 
         // Update UI
-        TasteBudgeData.tasteBudgeGame.observe(viewLifecycleOwner) {
+        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
             tasteBudgeGame = it
             // Also update roomCode
             tasteBudgeGame?.apply {
