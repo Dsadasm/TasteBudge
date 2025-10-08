@@ -12,10 +12,12 @@ object TasteBudgeData {
     private var _tasteBudgeGame : MutableLiveData<TasteBudgeGame> = MutableLiveData()
     var tasteBudgeGame : LiveData<TasteBudgeGame> = _tasteBudgeGame
 
+    var player : Player = Player()
+
 
     // Using firebase to "do networking"
 
-    // Save the TasteBudgeGame (so others can see changes)
+    // Save the TasteBudgeGame to FireBase (so others can see changes)
     fun saveGame(game : TasteBudgeGame) {
         _tasteBudgeGame.postValue(game)
 

@@ -21,6 +21,7 @@ class MenuFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_menu, container, false)
 
+        // i am not fully sure how this works
         TasteBudgeData.tasteBudgeGame.observe(viewLifecycleOwner) {
             tasteBudgeGame = it
         }
@@ -28,11 +29,19 @@ class MenuFragment : Fragment() {
 
         val buttonCreateRoom: Button = view.findViewById(R.id.buttonCreateRoom)
         buttonCreateRoom.setOnClickListener {
+
+            // Create a "player"
+            TasteBudgeData.player = Player()
+
             // Create a new TasteBudgeGame
             TasteBudgeData.saveGame(
                 TasteBudgeGame(
                     roomCode = (100000 .. 999999).random().toString(),
-                    gameStatus = GameStatus.WAITING
+                    gameStatus = GameStatus.WAITING,
+
+                    // set self as host,  add self to playerList
+                    hostPlayer = TasteBudgeData.player,
+                    playerList = mutableListOf(TasteBudgeData.player)
                 )
             )
 
@@ -48,7 +57,6 @@ class MenuFragment : Fragment() {
         val buttonJoinRoom: Button = view.findViewById(R.id.buttonJoinRoom)
         buttonJoinRoom.setOnClickListener {
             // Join room
-
             val fragment: RoomJoiningFragment = RoomJoiningFragment()
             val ft = parentFragmentManager.beginTransaction()
             ft.replace(R.id.fragment_container_view, fragment)

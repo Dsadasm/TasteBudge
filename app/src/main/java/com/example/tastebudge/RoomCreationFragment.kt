@@ -28,15 +28,10 @@ class RoomCreationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
-        // making random room code (need changes later)
-        roomCodeInt = (1 .. 999999).random()
-        roomCode= "0".repeat(6 - roomCodeInt.toString().length) + roomCodeInt.toString()
-         */
-
         // binding
         roomCodeText = view.findViewById<TextView>(R.id.textCode)
 
+        // Update UI
         TasteBudgeData.tasteBudgeGame.observe(viewLifecycleOwner) {
             tasteBudgeGame = it
             // Also update roomCode

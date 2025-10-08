@@ -12,7 +12,11 @@ class TasteBudgeGame (
 
     var playerList : MutableList<Player> = mutableListOf(),
     var hostPlayer : Player? = null
-)
+) {
+    fun addPlayer(player : Player) {
+        this.playerList.add(player)
+    }
+}
 
 
 // enum Class of different GameStatus
