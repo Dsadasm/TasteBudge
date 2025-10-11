@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "686088439585",
+    "project_id": "tastebudge",
+    "storage_bucket": "tastebudge.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686088439585:android:1f71353809a95b97f4e060",
+        "android_client_info": {
+          "package_name": "com.example.tastebudge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALNYHPXBI67Dt8qoCjdnDOR6e57xni8Vs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
