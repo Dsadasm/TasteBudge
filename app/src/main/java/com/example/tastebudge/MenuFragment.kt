@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MenuFragment : Fragment() {
 
@@ -52,6 +54,16 @@ class MenuFragment : Fragment() {
             ft.addToBackStack(null)
             ft.commit()
         }
+
+        // Test
+        lifecycleScope.launch {
+            RetrofitClient.yelpApiService.searchRestaurantsByLocation(
+                location = "Hong Kong",
+                radius = 4000,
+                limit = 20
+            )
+        }
+
 
         return view
     }

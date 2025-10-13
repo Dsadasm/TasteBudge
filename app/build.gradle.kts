@@ -1,3 +1,14 @@
+import java.util.Properties
+
+// Get local properties
+val localProps = Properties()
+val localPropertiesFile = File(rootProject.rootDir, "tastebudge.properties")
+if (localPropertiesFile.exists() && localPropertiesFile.isFile) {
+    localPropertiesFile.inputStream().use {
+        localProps.load(it)
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +29,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -25,6 +40,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "YELP_API_KEY", localProps.getProperty("YELP_API_KEY"))
+        }
+
+        debug {
+            buildConfigField("String", "YELP_API_KEY", localProps.getProperty("YELP_API_KEY"))
         }
     }
     compileOptions {
@@ -46,4 +66,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation (libs.gson)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }
