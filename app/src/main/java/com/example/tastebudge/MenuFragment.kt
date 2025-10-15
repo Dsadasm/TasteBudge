@@ -1,11 +1,16 @@
 package com.example.tastebudge
 
+import android.Manifest
+import android.content.Context
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
@@ -63,8 +68,19 @@ class MenuFragment : Fragment() {
                 limit = 20
             )
         }
-
-
         return view
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        // Test
+        val locationManager = LocationManager(context)
+
+        locationManager.requestPermissions(this)
+        lifecycleScope.launch {
+            val location: Location? = locationManager.getLastLocation()
+            Log.i("Test", "Latitude: ${location?.latitude} Longitude: ${location?.longitude}")
+        }
     }
 }
