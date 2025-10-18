@@ -1,12 +1,15 @@
 package com.example.tastebudge
 
+import android.util.Log
+
 object RestaurantManager {
     private val yelpService = RetrofitClient.yelpApiService
 
     suspend fun searchRestaurants(
-        latitude: Double,
-        longitude: Double,
+        latitude: Double?,
+        longitude: Double?,
     ): List<Restaurant>? {
+        if (latitude == null || longitude == null) return null
         return try {
             val response = yelpService.searchRestaurants(
                 latitude = latitude,
@@ -16,17 +19,18 @@ object RestaurantManager {
 
             response.businesses.map { it.toAppRestaurant() }
         } catch (e: Exception) {
-            println("Error fetching restaurants: ${e.message}")
+            Log.e("RestaurantManager", "Error fetching restaurants: ${e.message}")
             null
         }
     }
 
     // Extension function to convert Yelp business to our app's Restaurant model
     private fun YelpBusiness.toAppRestaurant(): Restaurant {
+        Log.i("RestaurantManager", "Image url: ${this.image_url}")
         return Restaurant(
             id = this.id,
             name = this.name,
-            imageUrl = this.imageUrl,
+            imageUrl = this.image_url,
             rating = this.rating,
             price = this.price ?: "$$", // Default if null
             distance = this.distance.toString(),

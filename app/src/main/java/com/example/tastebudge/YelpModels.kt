@@ -11,13 +11,13 @@ data class YelpSearchResponse(
 data class YelpBusiness(
     val id: String,
     val name: String,
-    val imageUrl: String,
+    val image_url: String,
     val url: String,
     val rating: Double,
     val price: String?,
     val phone: String,
-    val displayPhone: String,
-    val reviewCount: Int,
+    val display_phone: String,
+    val review_count: Int,
     val categories: List<YelpCategory>,
     val location: YelpLocation,
     val coordinates: YelpCoordinates,
@@ -38,7 +38,7 @@ data class YelpLocation(
     val zipCode: String,
     val country: String,
     val state: String,
-    val displayAddress: List<String>
+    val display_address: List<String>
 )
 
 data class YelpCoordinates(

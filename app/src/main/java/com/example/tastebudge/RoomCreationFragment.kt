@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 
 class RoomCreationFragment : Fragment() {
@@ -21,7 +22,19 @@ class RoomCreationFragment : Fragment() {
 
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_room_creation, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_room_creation, container, false)
+
+        val startRoomButton: Button = view.findViewById(R.id.buttonStartRoom)
+        startRoomButton.setOnClickListener {
+            // Go to Restaurant Search screen
+            val fragment = RestaurantSuggestionFragment()
+            val ft = parentFragmentManager.beginTransaction()
+            ft.replace(R.id.fragment_container_view, fragment)
+            ft.addToBackStack(null)
+            ft.commit()
+        }
+
+        return view
     }
 
     // apparently bindings must be made after view is created

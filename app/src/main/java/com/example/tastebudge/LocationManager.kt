@@ -55,6 +55,7 @@ class LocationManager(private val context: Context) {
                 val lastLocation = fusedLocationClient.lastLocation.await()
                 lastLocation
             } else {
+                Log.e("LocationManager", "No permission")
                 null
             }
         } catch (e: Exception) {

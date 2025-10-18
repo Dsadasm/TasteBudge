@@ -61,13 +61,13 @@ class MenuFragment : Fragment() {
         }
 
         // Test
-        lifecycleScope.launch {
-            RetrofitClient.yelpApiService.searchRestaurantsByLocation(
-                location = "Hong Kong",
-                radius = 4000,
-                limit = 20
-            )
-        }
+//        lifecycleScope.launch {
+//            RetrofitClient.yelpApiService.searchRestaurantsByLocation(
+//                location = "Hong Kong",
+//                radius = 4000,
+//                limit = 20
+//            )
+//        }
         return view
     }
 
@@ -75,12 +75,12 @@ class MenuFragment : Fragment() {
         super.onAttach(context)
 
         // Test
-        val locationManager = LocationManager(context)
-
-        locationManager.requestPermissions(this)
-        lifecycleScope.launch {
-            val location: Location? = locationManager.getLastLocation()
-            Log.i("Test", "Latitude: ${location?.latitude} Longitude: ${location?.longitude}")
-        }
+//        val locationManager = LocationManager(context)
+//
+//        locationManager.requestPermissions(this)
+//        lifecycleScope.launch {
+//            val location: Location? = locationManager.getLastLocation()
+//            Log.i("Test", "Latitude: ${location?.latitude} Longitude: ${location?.longitude}")
+//        }
     }
 }
