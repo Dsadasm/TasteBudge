@@ -46,10 +46,11 @@ class RestaurantSuggestionFragment : Fragment() {
         return view
     }
 
+    // Show a dialog to let user remove restaurant from session
     private fun showRemoveRestaurantDialog(restaurant: Restaurant) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(restaurant.name)
-            .setMessage("Add restaurant?")
+            .setMessage("Remove restaurant?")
             .setPositiveButton("Yes") {dialog, which ->
                 // Todo: Remove restaurant from current session
             }
