@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class RestaurantSuggestionFragment : Fragment() {
     override fun onCreateView(
@@ -14,6 +16,12 @@ class RestaurantSuggestionFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_restaurant_suggestion, container, false)
+
+        // Todo: Fetch restaurant from current session
+        val restaurantListView: RecyclerView = view.findViewById(R.id.restaurantList)
+        restaurantListView.adapter = RestaurantListViewAdapter(emptyList()) { restaurant ->
+            showRemoveRestaurantDialog(restaurant)
+        }
 
         // Go to Restaurant Search screen
         val searchButton: Button = view.findViewById(R.id.searchButton)
@@ -36,5 +44,18 @@ class RestaurantSuggestionFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun showRemoveRestaurantDialog(restaurant: Restaurant) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(restaurant.name)
+            .setMessage("Add restaurant?")
+            .setPositiveButton("Yes") {dialog, which ->
+                // Todo: Remove restaurant from current session
+            }
+            .setNegativeButton("No") {dialog, which ->
+                // Do nothing
+            }
+            .show()
     }
 }

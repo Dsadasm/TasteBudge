@@ -16,8 +16,9 @@ interface YelpApiService {
     ): YelpSearchResponse
 
     @GET("businesses/search")
-    suspend fun searchRestaurantsByLocation(
-        @Query("location") location: String,
+    suspend fun searchRestaurantsByTerm(
+        @Query("location") location: String = "Hong Kong",
+        @Query("term") term: String,
         @Query("radius") radius: Int = 4000,
         @Query("limit") limit: Int = 20
     ): YelpSearchResponse

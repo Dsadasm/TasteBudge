@@ -73,6 +73,8 @@ class MenuFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        val locationManager = LocationManager(context)
+        locationManager.requestPermissions(this)
 
         // Test
 //        val locationManager = LocationManager(context)
