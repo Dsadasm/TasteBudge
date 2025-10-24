@@ -5,7 +5,6 @@ import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 
@@ -22,12 +21,15 @@ object TasteBudgeManager {
     // Using firebase to "do networking"
 
     // Save the TasteBudgeGame to FireBase (so others can see changes)
-    fun saveGame(game : TasteBudgeGame) {
+    fun saveGame(game: TasteBudgeGame) {
         _tasteBudgeGame.postValue(game)
 
         Firebase.firestore.collection("TasteBudge")
             .document(game.roomCode)
             .set(game)
+            .addOnFailureListener { exception ->
+                Log.w("TasteBudgeManger", "Listen failed.", exception)
+            }
 
     }
 
@@ -80,7 +82,10 @@ object TasteBudgeManager {
         tasteBudgeGame.value?.apply {
             Firebase.firestore.collection("TasteBudge")
                 .document(roomCode)
-                .addSnapshotListener{ value, error ->
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w("TasteBudgeManger", "Listen failed.", error)
+                    }
                     val game = value?.toObject(TasteBudgeGame::class.java)
                     _tasteBudgeGame.postValue(game)
                 }

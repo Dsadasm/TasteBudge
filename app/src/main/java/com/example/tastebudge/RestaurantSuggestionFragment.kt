@@ -1,15 +1,22 @@
 package com.example.tastebudge
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.launch
 
 class RestaurantSuggestionFragment : Fragment() {
+    private var tasteBudgeGame : TasteBudgeGame? = null
+    private lateinit var adapter: RestaurantListViewAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -17,10 +24,18 @@ class RestaurantSuggestionFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_restaurant_suggestion, container, false)
 
-        // Todo: Fetch restaurant from current session
-        val restaurantListView: RecyclerView = view.findViewById(R.id.restaurantList)
-        restaurantListView.adapter = RestaurantListViewAdapter(emptyList()) { restaurant ->
-            showRemoveRestaurantDialog(restaurant)
+        // Fetch restaurant from current session
+        TasteBudgeManager.fetchGame()
+        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
+            tasteBudgeGame = it
+            tasteBudgeGame?.apply {
+                adapter = RestaurantListViewAdapter(this.restaurantList) { restaurant ->
+                    showRemoveRestaurantDialog(restaurant)
+                }
+                val restaurantListView: RecyclerView = view.findViewById(R.id.restaurantList)
+                restaurantListView.layoutManager = LinearLayoutManager(requireContext())
+                restaurantListView.adapter = adapter
+            }
         }
 
         // Go to Restaurant Search screen
@@ -52,7 +67,11 @@ class RestaurantSuggestionFragment : Fragment() {
             .setTitle(restaurant.name)
             .setMessage("Remove restaurant?")
             .setPositiveButton("Yes") {dialog, which ->
-                // Todo: Remove restaurant from current session
+                // Remove restaurant from current session
+                tasteBudgeGame?.apply {
+                    this.restaurantList.remove(restaurant)
+                    TasteBudgeManager.saveGame(this)
+                }
             }
             .setNegativeButton("No") {dialog, which ->
                 // Do nothing

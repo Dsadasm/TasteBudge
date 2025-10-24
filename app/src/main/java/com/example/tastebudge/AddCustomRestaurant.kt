@@ -8,14 +8,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class AddCustomRestaurant : Fragment() {
+    private var tasteBudgeGame : TasteBudgeGame? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_add_custom_restaurant, container, false)
+        TasteBudgeManager.fetchGame()
+        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
+            tasteBudgeGame = it
+        }
 
         // Create custom restaurant
         val createButton: Button = view.findViewById(R.id.createButton)
@@ -44,7 +51,15 @@ class AddCustomRestaurant : Fragment() {
                     .show()
             }
             else {
-                // Todo: Add custom restaurant to session
+                // Add custom restaurant
+                if (rating != null) {
+                    val restaurant = Restaurant(rating = rating.toDouble(), price = price, name = name)
+                    tasteBudgeGame?.apply {
+                        this.restaurantList.add(restaurant)
+                        TasteBudgeManager.saveGame(this)
+                        showNotifyRestaurantDialog(restaurant)
+                    }
+                }
             }
         }
 
@@ -55,6 +70,17 @@ class AddCustomRestaurant : Fragment() {
         }
 
         return view
+    }
+
+    // Show a dialog to notify user add restaurant to session
+    private fun showNotifyRestaurantDialog(restaurant: Restaurant) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(restaurant.name)
+            .setMessage("Restaurant Added")
+            .setPositiveButton("Yes") {dialog, which ->
+                // Do nothing
+            }
+            .show()
     }
 
 }

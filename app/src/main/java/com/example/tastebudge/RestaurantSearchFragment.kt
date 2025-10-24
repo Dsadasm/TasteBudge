@@ -2,7 +2,6 @@ package com.example.tastebudge
 
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class RestaurantSearchFragment : Fragment() {
+    private var tasteBudgeGame : TasteBudgeGame? = null
+
     private lateinit var restaurantListView: RecyclerView
     private lateinit var adapter: RestaurantListViewAdapter
 
@@ -26,13 +27,18 @@ class RestaurantSearchFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_restaurant_search, container, false)
         restaurantListView = view.findViewById(R.id.restaurantList)
+        TasteBudgeManager.fetchGame()
+        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
+            tasteBudgeGame = it
+        }
 
         // Update the restaurantListView to show nearby restaurant
         val locationManager = LocationManager(requireContext())
+        locationManager.requestPermissions(this)
         lifecycleScope.launch {
             val location: Location? = locationManager.getLastLocation()
             val restaurants: List<Restaurant>? = RestaurantManager.searchRestaurants(location?.latitude, location?.longitude)
-            restaurantListView.layoutManager = LinearLayoutManager(context)
+            restaurantListView.layoutManager = LinearLayoutManager(requireContext())
             if (restaurants != null) {
                 adapter = RestaurantListViewAdapter(restaurants) { restaurant ->
                     showAddRestaurantDialog(restaurant)
@@ -70,7 +76,12 @@ class RestaurantSearchFragment : Fragment() {
             .setTitle(restaurant.name)
             .setMessage("Add restaurant?")
             .setPositiveButton("Yes") {dialog, which ->
-                // Todo: Add restaurant to current session
+                // Add restaurant to current session
+
+                tasteBudgeGame?.apply {
+                    this.restaurantList.add(restaurant)
+                    TasteBudgeManager.saveGame(this)
+                }
             }
             .setNegativeButton("No") {dialog, which ->
                 // Do nothing
