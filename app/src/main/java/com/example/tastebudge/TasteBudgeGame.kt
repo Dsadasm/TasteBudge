@@ -11,7 +11,9 @@ class TasteBudgeGame (
     var gameStatus : GameStatus = GameStatus.WAITING,
 
     var userList : MutableList<User> = mutableListOf(),
-    var hostUser : User? = null
+    var hostUser : User? = null,
+
+    var restaurantList : MutableList<Restaurant> = mutableListOf()
 ) {
     fun addUser(user : User) {
         this.userList.add(user)
