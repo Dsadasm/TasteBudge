@@ -1,17 +1,24 @@
 package com.example.tastebudge
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.createBitmap
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 
 class RoomCreationFragment : Fragment() {
 
 
     private var roomCodeText: TextView? = null
+    private var qrCodeImage : ImageView? = null
 
     private var tasteBudgeGame : TasteBudgeGame? = null
 
@@ -43,6 +50,7 @@ class RoomCreationFragment : Fragment() {
 
         // binding
         roomCodeText = view.findViewById<TextView>(R.id.textCode)
+        qrCodeImage = view.findViewById(R.id.qrCode)
 
         // Update UI
         TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
@@ -50,9 +58,28 @@ class RoomCreationFragment : Fragment() {
             // Also update roomCode
             tasteBudgeGame?.apply {
                 roomCodeText!!.text = roomCode
+                displayQrCode(qrCodeImage!!, roomCode)
             }
         }
+    }
 
+
+    fun generateQrCode(roomCode : String, size : Int = 400) : Bitmap {
+        try {
+            val encoder = BarcodeEncoder()
+            return encoder.encodeBitmap(roomCode, BarcodeFormat.QR_CODE, size, size)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Create a simple error bitmap
+            return createBitmap(size, size).apply {
+                eraseColor(Color.RED)
+            }
+        }
+    }
+
+    fun displayQrCode(imageView: ImageView, roomCode: String) {
+        val qrBitmap = generateQrCode(roomCode)
+        imageView.setImageBitmap(qrBitmap)
     }
 
 }
