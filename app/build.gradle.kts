@@ -73,4 +73,5 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.glide)
     implementation(libs.zxing.android.embedded)
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
 }

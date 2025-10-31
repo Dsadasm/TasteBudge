@@ -15,32 +15,6 @@ import kotlinx.coroutines.tasks.await
 class LocationManager(private val context: Context) {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
-    // Request location permission. Call this before getLastLocation
-    fun requestPermissions(fragment: Fragment) {
-        val locationPermissionRequest = fragment.registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                    // Precise location access granted.
-                }
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    // Only approximate location access granted.
-                }
-                else -> {
-                    // No location access granted.
-                }
-            }
-        }
-
-        locationPermissionRequest.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        )
-    }
-
     suspend fun getLastLocation(): Location? {
         val isGrantedPermission = ContextCompat.checkSelfPermission(
             context,

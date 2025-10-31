@@ -8,24 +8,24 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.tastebudge.RestaurantListViewAdapter.ViewHolder
 
-class RestaurantListViewAdapter(
-    private var restaurantList: List<Restaurant>,
-    private val onItemClick: (Restaurant) -> Unit = {}
-) : RecyclerView.Adapter<RestaurantListViewAdapter.ViewHolder>() {
+class RestaurantCardAdapter(
+    private val restaurantList: List<Restaurant>
+) : RecyclerView.Adapter<RestaurantCardAdapter.ViewHolder>() {
 
     // Inflate the layout
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.restaurant_item_layout, parent, false)
+    ): RestaurantCardAdapter.ViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.restaurant_card, parent, false)
         return ViewHolder(itemView)
     }
 
     // Set the view
     override fun onBindViewHolder(
-        holder: ViewHolder,
+        holder: RestaurantCardAdapter.ViewHolder,
         position: Int
     ) {
         val currentItem = restaurantList[position]
@@ -39,11 +39,6 @@ class RestaurantListViewAdapter(
             .load(currentItem.imageUrl)
             .placeholder(R.drawable.question_sign)
             .into(holder.restaurantImage)
-
-        // Set on click listener
-        holder.itemView.setOnClickListener {
-            onItemClick(currentItem)
-        }
     }
 
     // Return the number of items we want to show
@@ -57,11 +52,5 @@ class RestaurantListViewAdapter(
         val restaurantName: TextView = itemView.findViewById(R.id.restaurantName)
         val restaurantPrice: TextView = itemView.findViewById(R.id.restaurantPrice)
         val restaurantRating: AppCompatRatingBar = itemView.findViewById(R.id.restaurantRating)
-    }
-
-    // Update data method
-    fun updateData(newRestaurantList: List<Restaurant>) {
-        restaurantList = newRestaurantList
-        notifyDataSetChanged()
     }
 }
