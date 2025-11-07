@@ -25,6 +25,6 @@ class TasteBudgeGame (
 enum class GameStatus {
     WAITING,        // before Host presses Ready
     SUGGESTION,     // during Restaurant Suggestion phase
-    MATCHING,       // during Matching Game
+    MATCHING,     // during Matching Game
     FINISHED        // Winner determined
 }

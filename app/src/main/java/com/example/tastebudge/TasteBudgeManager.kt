@@ -28,7 +28,7 @@ object TasteBudgeManager {
             .document(game.roomCode)
             .set(game)
             .addOnFailureListener { exception ->
-                Log.w("TasteBudgeManger", "Listen failed.", exception)
+                Log.w("TasteBudgeManger", "Listen failed for saveGame.", exception)
             }
 
     }
@@ -84,7 +84,7 @@ object TasteBudgeManager {
                 .document(roomCode)
                 .addSnapshotListener { value, error ->
                     if (error != null) {
-                        Log.w("TasteBudgeManger", "Listen failed.", error)
+                        Log.w("TasteBudgeManger", "Listen failed for fetchGame.", error)
                     }
                     val game = value?.toObject(TasteBudgeGame::class.java)
                     _tasteBudgeGame.postValue(game)

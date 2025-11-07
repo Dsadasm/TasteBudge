@@ -53,7 +53,7 @@ class AddCustomRestaurant : Fragment() {
             else {
                 // Add custom restaurant
                 if (rating != null) {
-                    val restaurant = Restaurant(rating = rating.toDouble(), price = price, name = name)
+                    val restaurant = Restaurant(rating = rating.toDouble(), price = price, name = name, score = 0)
                     tasteBudgeGame?.apply {
                         this.restaurantList.add(restaurant)
                         TasteBudgeManager.saveGame(this)

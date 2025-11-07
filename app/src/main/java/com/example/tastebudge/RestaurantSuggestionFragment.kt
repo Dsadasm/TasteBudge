@@ -64,7 +64,6 @@ class RestaurantSuggestionFragment : Fragment() {
             val fragment = MatchingFragment()
             val ft = parentFragmentManager.beginTransaction()
             ft.replace(R.id.fragment_container_view, fragment)
-            ft.addToBackStack(null)
             ft.commit()
         }
 

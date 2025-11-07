@@ -8,5 +8,6 @@ data class Restaurant (
     val price: String = "",
     val distance: String = "",
     val address: String = "",
-    val coordinates: Map<String, Double> = mapOf()
+    val coordinates: Map<String, Double> = mapOf(),
+    var score: Int = 0
 )

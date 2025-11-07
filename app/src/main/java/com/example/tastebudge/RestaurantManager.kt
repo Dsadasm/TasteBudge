@@ -55,7 +55,8 @@ object RestaurantManager {
             coordinates = mapOf(
                 "lat" to this.coordinates.latitude,
                 "lng" to this.coordinates.longitude
-            )
+            ),
+            score = 0
         )
     }
 }
