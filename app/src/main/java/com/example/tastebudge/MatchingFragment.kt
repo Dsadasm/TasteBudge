@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 
 class MatchingFragment : Fragment() {
     private var tasteBudgeGame : TasteBudgeGame? = null
+    private lateinit var localRestaurantList: MutableList<Restaurant>
     private lateinit var cardStackView: CardStackView
     private lateinit var cardStackLayoutManager: CardStackLayoutManager
     private lateinit var adapter: RestaurantCardAdapter
@@ -50,13 +51,16 @@ class MatchingFragment : Fragment() {
 
         // Fetch restaurant from current session
         TasteBudgeManager.fetchGame()
-
-        // Use apply to avoid change in UI when calling saveGame
         TasteBudgeManager.tasteBudgeGame.apply {
             tasteBudgeGame = this.value
-            adapter = RestaurantCardAdapter(tasteBudgeGame!!.restaurantList)
+        }
+
+        // Use apply to avoid change in UI when calling saveGame
+        tasteBudgeGame?.apply {
+            localRestaurantList = restaurantList
+            adapter = RestaurantCardAdapter(restaurantList)
             cardStackView = view.findViewById(R.id.card_stack_view)
-            setupCardStackView(tasteBudgeGame!!.restaurantList)
+            setupCardStackView(restaurantList)
         }
 
         // Inflate the layout for this fragment
@@ -168,21 +172,31 @@ class MatchingFragment : Fragment() {
             else -> 0
         }
 
-        // Send vote to Firebase
-        tasteBudgeGame?.apply {
-            restaurantList[swipePosition].score += vote
+        // Send vote to local
+        localRestaurantList[swipePosition].score += vote
 
-            // Go to end screen if done voting
-            if (swipePosition == restaurantList.size - 1) {
-                TasteBudgeManager.saveGame(this)
-                val fragment = EndFragment()
-                val ft = parentFragmentManager.beginTransaction()
-                ft.replace(R.id.fragment_container_view, fragment)
-                ft.addToBackStack(null)
-                ft.commit()
+        // Go to end screen if done voting
+        if (swipePosition == localRestaurantList.size - 1) {
+            // Fetch restaurant from current session
+            TasteBudgeManager.fetchGame()
+            TasteBudgeManager.tasteBudgeGame.apply {
+                tasteBudgeGame = this.value
             }
-        }
 
+            // Send vote to Firebase
+            tasteBudgeGame?.apply {
+                tasteBudgeGame!!.restaurantList.forEachIndexed { index, element ->
+                    element.score += localRestaurantList[index].score
+                }
+                TasteBudgeManager.saveGame(this)
+            }
+
+            val fragment = EndFragment()
+            val ft = parentFragmentManager.beginTransaction()
+            ft.replace(R.id.fragment_container_view, fragment)
+            ft.addToBackStack(null)
+            ft.commit()
+        }
 
         // Show swipe feedback
         showSwipeFeedback(direction)
