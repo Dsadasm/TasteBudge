@@ -125,6 +125,14 @@ class RoomJoiningFragment : Fragment() {
         // Validate the code is 6 digits
         if (insertedCode.matches(Regex("\\d{6}"))) {
             TasteBudgeManager.joinGame(insertedCode, codeInput!!)
+            if (TasteBudgeManager.joinedGame) {
+                // Go to Waiting Screen
+                val fragment = RoomWaitingFragment()
+                val ft = parentFragmentManager.beginTransaction()
+                ft.replace(R.id.fragment_container_view, fragment)
+                ft.addToBackStack(null)
+                ft.commit()
+            }
         } else {
             Toast.makeText(requireContext(), "Please enter a valid 6-digit room code", Toast.LENGTH_SHORT).show()
         }

@@ -33,6 +33,14 @@ class RoomCreationFragment : Fragment() {
 
         val startRoomButton: Button = view.findViewById(R.id.buttonStartRoom)
         startRoomButton.setOnClickListener {
+            // Change GameStatus
+
+            TasteBudgeManager.fetchGame()   // make sure game is updated first
+            tasteBudgeGame?.apply {
+                this.gameStatus = GameStatus.SUGGESTION
+                TasteBudgeManager.saveGame(this)
+            }
+
             // Go to Restaurant Search screen
             val fragment = RestaurantSuggestionFragment()
             val ft = parentFragmentManager.beginTransaction()

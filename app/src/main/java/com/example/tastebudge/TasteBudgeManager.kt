@@ -16,6 +16,7 @@ object TasteBudgeManager {
     var tasteBudgeGame : LiveData<TasteBudgeGame> = _tasteBudgeGame
 
     var user : User = User()
+    var joinedGame : Boolean = false
 
 
     // Using firebase to "do networking"
@@ -69,8 +70,7 @@ object TasteBudgeManager {
                     // Correct room code
                     game.addUser(TasteBudgeManager.user)
                     TasteBudgeManager.saveGame(game)
-
-                    // Should switch to another fragment
+                    joinedGame = true
                 }
             }
     }
