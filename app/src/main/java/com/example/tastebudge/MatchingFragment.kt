@@ -50,13 +50,13 @@ class MatchingFragment : Fragment() {
 
         // Fetch restaurant from current session
         TasteBudgeManager.fetchGame()
-        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
-            tasteBudgeGame = it
-            tasteBudgeGame?.apply {
-                adapter = RestaurantCardAdapter(this.restaurantList)
-                cardStackView = view.findViewById(R.id.card_stack_view)
-                setupCardStackView(this.restaurantList)
-            }
+
+        // Use apply to avoid change in UI when calling saveGame
+        TasteBudgeManager.tasteBudgeGame.apply {
+            tasteBudgeGame = this.value
+            adapter = RestaurantCardAdapter(tasteBudgeGame!!.restaurantList)
+            cardStackView = view.findViewById(R.id.card_stack_view)
+            setupCardStackView(tasteBudgeGame!!.restaurantList)
         }
 
         // Inflate the layout for this fragment
@@ -93,17 +93,7 @@ class MatchingFragment : Fragment() {
             }
 
             override fun onCardDisappeared(view: View?, position: Int) {
-                // Go to end screen if done voting
-                if (position == restaurantList.size - 1) {
-                    tasteBudgeGame?.apply {
-                        TasteBudgeManager.saveGame(this)
-                    }
-                    val fragment = EndFragment()
-                    val ft = parentFragmentManager.beginTransaction()
-                    ft.replace(R.id.fragment_container_view, fragment)
-                    ft.addToBackStack(null)
-                    ft.commit()
-                }
+                return
             }
 
         })
@@ -181,6 +171,16 @@ class MatchingFragment : Fragment() {
         // Send vote to Firebase
         tasteBudgeGame?.apply {
             restaurantList[swipePosition].score += vote
+
+            // Go to end screen if done voting
+            if (swipePosition == restaurantList.size - 1) {
+                TasteBudgeManager.saveGame(this)
+                val fragment = EndFragment()
+                val ft = parentFragmentManager.beginTransaction()
+                ft.replace(R.id.fragment_container_view, fragment)
+                ft.addToBackStack(null)
+                ft.commit()
+            }
         }
 
 
