@@ -7,15 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 class RestaurantSuggestionFragment : Fragment() {
     private var tasteBudgeGame : TasteBudgeGame? = null
     private lateinit var adapter: RestaurantListViewAdapter
+
+    // For detecting GameStatus change
+    private var gameStatusListener: ListenerRegistration? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,6 +98,18 @@ class RestaurantSuggestionFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // For checking status change
+        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
+            tasteBudgeGame = it
+            tasteBudgeGame?.apply {
+                // Check current status
+                setupFirestoreListener(roomCode)
+            }
+        }
+    }
+
     // Show a dialog to let user remove restaurant from session
     private fun showRemoveRestaurantDialog(restaurant: Restaurant) {
         MaterialAlertDialogBuilder(requireContext())
@@ -107,5 +126,76 @@ class RestaurantSuggestionFragment : Fragment() {
                 // Do nothing
             }
             .show()
+    }
+
+    // Procedure for "warping": Detect GameStatus change (by host) and follow
+
+    private fun setupFirestoreListener(roomCode: String) {
+        // Remove existing listener first
+        gameStatusListener?.remove()
+
+        val db = Firebase.firestore
+
+        // Listen for changes to the game document
+        gameStatusListener = db.collection("TasteBudge")
+            .document(roomCode)
+            .addSnapshotListener { snapshot, error ->
+                error?.let {
+                    activity?.runOnUiThread {
+                        Toast.makeText(requireContext(), "Connection error", Toast.LENGTH_SHORT).show()
+                    }
+                    return@addSnapshotListener
+                }
+
+                snapshot?.let { document ->
+                    if (document.exists()) {
+                        val newStatusString = document.getString("gameStatus")
+                        newStatusString?.let { status ->
+                            try {
+                                val newStatus = GameStatus.valueOf(status)
+
+                                // Check if status actually changed to avoid unnecessary navigation
+                                if (newStatus != tasteBudgeGame?.gameStatus) {
+                                    handleGameStatusChange(newStatus)
+                                }
+                            } catch (e: IllegalArgumentException) {
+                            }
+                        }
+                    } else {
+                        activity?.runOnUiThread {
+                            Toast.makeText(requireContext(), "Room not found", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+    }
+
+    private fun handleGameStatusChange(newStatus: GameStatus) {
+        activity?.runOnUiThread {
+            // Update local game status first
+            tasteBudgeGame?.gameStatus = newStatus
+
+            when (newStatus) {
+                GameStatus.MATCHING -> {
+                    val fragment = MatchingFragment()
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container_view, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+                else -> {
+                    // WAITING or other status - no navigation needed
+                }
+            }
+        }
+    }
+    private fun cleanupFirestoreListener() {
+        gameStatusListener?.remove()
+        gameStatusListener = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        cleanupFirestoreListener()
     }
 }
