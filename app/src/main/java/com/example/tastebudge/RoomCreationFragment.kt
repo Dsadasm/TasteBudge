@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.graphics.createBitmap
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import android.util.Log
 
 class RoomCreationFragment : Fragment() {
 
@@ -33,8 +34,8 @@ class RoomCreationFragment : Fragment() {
 
         val startRoomButton: Button = view.findViewById(R.id.buttonStartRoom)
         startRoomButton.setOnClickListener {
-            // Change GameStatus
 
+            // Change GameStatus to SUGGESTION
             TasteBudgeManager.fetchGame()   // make sure game is updated first
             tasteBudgeGame?.apply {
                 this.gameStatus = GameStatus.SUGGESTION
@@ -48,13 +49,13 @@ class RoomCreationFragment : Fragment() {
             ft.addToBackStack(null)
             ft.commit()
         }
-
         return view
     }
 
     // apparently bindings must be made after view is created
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         // binding
         roomCodeText = view.findViewById<TextView>(R.id.textCode)

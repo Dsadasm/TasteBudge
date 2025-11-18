@@ -24,6 +24,7 @@ class RoomWaitingFragment : Fragment() {
     private var roomCodeString : String? = null
     private var tasteBudgeGame : TasteBudgeGame? = null
 
+    // For detecting GameStatus change
     private var gameStatusListener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +57,8 @@ class RoomWaitingFragment : Fragment() {
             }
         }
     }
+
+    // Procedure for "warping": Detect GameStatus change (by host) and follow
 
     private fun setupFirestoreListener(roomCode: String) {
         // Remove existing listener first

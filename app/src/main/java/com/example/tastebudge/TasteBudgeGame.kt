@@ -11,7 +11,7 @@ class TasteBudgeGame (
     var gameStatus : GameStatus = GameStatus.WAITING,
 
     var userList : MutableList<User> = mutableListOf(),
-    var hostUser : User? = null,
+    var hostUserID : String? = null,
 
     var restaurantList : MutableList<Restaurant> = mutableListOf()
 ) {

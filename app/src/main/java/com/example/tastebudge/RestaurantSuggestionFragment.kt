@@ -60,7 +60,28 @@ class RestaurantSuggestionFragment : Fragment() {
 
         // Go to Matching screen
         val readyButton: Button = view.findViewById(R.id.readyButton)
+
+        // Only visible to host (NOT YET TESTED)
+        TasteBudgeManager.fetchGame()
+        TasteBudgeManager.tasteBudgeGame.observe(viewLifecycleOwner) {
+            tasteBudgeGame = it
+            tasteBudgeGame?.apply {
+                if (hostUserID == TasteBudgeManager.user.userID) {
+                    readyButton.visibility = View.VISIBLE
+                } else {
+                    readyButton.visibility = View.INVISIBLE
+                }
+            }
+        }
+
         readyButton.setOnClickListener {
+            // Change GameStatus to MATCHING
+            TasteBudgeManager.fetchGame()   // make sure game is updated first
+            tasteBudgeGame?.apply {
+                this.gameStatus = GameStatus.MATCHING
+                TasteBudgeManager.saveGame(this)
+            }
+
             val fragment = MatchingFragment()
             val ft = parentFragmentManager.beginTransaction()
             ft.replace(R.id.fragment_container_view, fragment)

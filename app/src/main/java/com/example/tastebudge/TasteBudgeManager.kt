@@ -50,7 +50,7 @@ object TasteBudgeManager {
                 gameStatus = GameStatus.WAITING,
 
                 // set self as host,  add self to playerList
-                hostUser = TasteBudgeManager.user,
+                hostUserID = TasteBudgeManager.user.userID,
                 userList = mutableListOf(TasteBudgeManager.user)
             )
         )
