@@ -1,5 +1,6 @@
 package com.example.tastebudge
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,5 +17,14 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // For background music
+        startService(Intent(this, BackgroundMusicService::class.java))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Stop music when app closes
+        stopService(Intent(this, BackgroundMusicService::class.java))
     }
 }

@@ -74,4 +74,7 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.zxing.android.embedded)
     implementation("com.github.yuyakaido:CardStackView:v2.3.4")
+    implementation("androidx.media3:media3-exoplayer:1.8.0")
+    implementation("androidx.media3:media3-session:1.8.0")
+    implementation("androidx.media3:media3-common:1.8.0")
 }
