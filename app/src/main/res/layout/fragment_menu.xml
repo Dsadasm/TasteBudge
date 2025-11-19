@@ -7,37 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".MenuFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:text="Taste"
-        android:textSize="70sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.273"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        android:text="Budge"
-        android:textSize="70sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.651"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="248dp"
+        android:layout_width="275dp"
+        android:layout_height="295dp"
+        android:layout_marginTop="124dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/taste_budge" />
 
     <Button
         android:id="@+id/buttonCreateRoom"
@@ -45,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="224dp"
         android:text="Create Room"
+        android:backgroundTint="#D22B2B"
         android:textSize="30sp"
         android:minWidth="250dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="128dp"
         android:text="Join Room"
+        android:backgroundTint="#4CAF50"
         android:textSize="30sp"
         android:minWidth="250dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,8 +60,8 @@
         android:id="@+id/buttonSFX"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="68dp"
         android:background="@drawable/rounded_corner"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,8 +72,8 @@
         android:id="@+id/buttonHelp"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="136dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="120dp"
         android:background="@drawable/rounded_corner"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"

@@ -63,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
         android:text="Start"
+        android:backgroundTint="#D22B2B"
         android:textSize="30sp"
         android:minWidth="250dp"
         app:layout_constraintBottom_toBottomOf="parent"

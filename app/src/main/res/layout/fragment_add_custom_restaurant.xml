@@ -107,6 +107,7 @@
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="10dp"
                 android:text="Create"
+                android:backgroundTint="#4CAF50"
                 android:textSize="20sp" />
 
             <Button
@@ -115,6 +116,7 @@
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="10dp"
                 android:text="Back"
+                android:backgroundTint="#D22B2B"
                 android:textSize="20sp" />
 
         </LinearLayout>
