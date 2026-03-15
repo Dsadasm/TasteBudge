@@ -5,10 +5,23 @@ Our app TasteBudge aims to solve the problem of choosing which restaurant to eat
   - Easy search for nearby restaurants
   - Intuitive Tinder-like matching game
 ## How to use
-  - First, press the create room button to create a room for your friends to join in or press the join room button to join a room using code or QR code.
+  - First, press the create room button to create a room for your friends to join in or press the join room button to join a room using code or QR code. 
+  
+    <img src="./screenshots/1.png" width="200">
+
   - Second, pick the restaurant that you want by searching for nearby restaurants or creating a custom one. Once all the users in room have decided on their restaurants, the host can press the ready button to start the matching game.
+
+    <img src="./screenshots/2.png" width="200">
+
   - Third, play the matching game by swiping left, right or up. Left is dislike (0 score), right is like (1 score) and up is super like (2 scores).
-  - Finally, restaurants with the highest scores will be displayed on the screen when the matching game is finished.
+
+    <img src="./screenshots/3.png" width="200">
+
+  - Finally, restaurants with the highest scores will be 
+  displayed on the screen when the matching game is finished.
+
+    <img src="./screenshots/4.png" width="200">
+
 ## YELP API
 This app relies on YELP API to search nearby restaurants so **YELP API Key** is needed.
   - Add a file named “tastebudge.properties” at the root directory.
