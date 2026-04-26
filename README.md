@@ -5,7 +5,7 @@ Our app TasteBudge aims to solve the problem of choosing which restaurant to eat
   - Easy search for nearby restaurants
   - Intuitive Tinder-like matching game
 
-    <img src="./screenshots/5.png" width="600">
+    <img src="./screenshots/5.png" width="750">
 
 ## How to use
   - First, press the create room button to create a room for your friends to join in or press the join room button to join a room using code or QR code. 
